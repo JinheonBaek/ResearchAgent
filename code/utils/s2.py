@@ -22,7 +22,10 @@ def batched(items: list, batch_size: int):
 
 
 def flatten_list(items: list):
-    return list(chain.from_iterable(items))
+    return (
+        list(chain.from_iterable(items))
+        if items and items[0] is not None else []
+    )
 
 
 def get_papers(
@@ -48,7 +51,8 @@ def filter_papers(
 ):
     return [
         paper for paper in papers
-        if all(paper[category] is not None for category in categories)
+        if isinstance(paper, dict)
+        and all(paper.get(category) is not None for category in categories)
     ]
 
 

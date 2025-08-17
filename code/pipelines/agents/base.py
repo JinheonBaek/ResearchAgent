@@ -21,8 +21,8 @@ class BaseAgent(ABC):
         return "".join(
             [
                 f"Related paper #{index+1} title: {related_paper.get('title')}"
-                + (f"\nRelated paper #{index+1} abstract: {related_paper.get('abstract')}\n" if include_abstract else "")
-                + "\n"
+                + (f"\nRelated paper #{index+1} abstract: {related_paper.get('abstract')}" if include_abstract else "")
+                + "\n\n"
                 for index, related_paper in enumerate(references)
             ]
         )

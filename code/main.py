@@ -40,6 +40,7 @@ def run(
 
     return results
 
+
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--data-path', '-d', default='./data/papers.jsonl')

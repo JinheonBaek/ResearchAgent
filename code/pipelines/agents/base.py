@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 
 from utils.evaluation import METRIC2DESCRIPTION
 
+
 class BaseAgent(ABC):
     def __init__(self, api_client: Any = None):
         self.api_client = api_client

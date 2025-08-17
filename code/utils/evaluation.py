@@ -1,5 +1,6 @@
 from typing import Dict, Any
 
+
 METRIC2DESCRIPTION = {
     'problem': {
         'Clarity': 'It assesses whether the problem is defined in a clear, precise, and understandable manner.',
@@ -24,20 +25,26 @@ METRIC2DESCRIPTION = {
     }
 }
 
+
 def get_feedbacks_scores(feedbacks: Dict[str, Dict[str, Any]]):
     return [feedback['rating'] for feedback in feedbacks.values() if feedback['rating']]
+
 
 def get_feedback2score(feedbacks: Dict[str, Dict[str, Any]]):
     return {metric: feedback['rating'] for metric, feedback in feedbacks.items() if feedback['rating']}
 
+
 def get_num_feedbacks_scores(feedbacks: Dict[str, Dict[str, Any]]):
     return len(get_feedbacks_scores(feedbacks))
+
 
 def get_avg_feedbacks_score(feedbacks: Dict[str, Dict[str, Any]]):
     return sum(get_feedbacks_scores(feedbacks)) / len(get_feedbacks_scores(feedbacks))
 
+
 def get_min_feedbacks_score(feedbacks: Dict[str, Dict[str, Any]]):
     return min(get_feedbacks_scores(feedbacks))
+
 
 def get_low_score_feedbacks(feedbacks: Dict[str, Dict[str, Any]], target_score: int = 5):
     target_feedbacks = [metric for metric, score in get_feedback2score(feedbacks).items() if score < target_score]

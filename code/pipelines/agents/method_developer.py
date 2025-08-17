@@ -5,6 +5,7 @@ from .base import BaseAgent
 from utils.evaluation import get_low_score_feedbacks
 from utils.formatting import list_of_items_to_grammatical_text
 
+
 class MethodDeveloper(BaseAgent):
     def __init__(self, api_client=None):
         super().__init__(api_client)

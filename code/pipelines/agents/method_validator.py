@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from .base import BaseAgent
 
+
 class MethodValidator(BaseAgent):
     def __init__(self, api_client=None):
         super().__init__(api_client)

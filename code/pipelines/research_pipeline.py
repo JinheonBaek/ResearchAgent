@@ -7,6 +7,7 @@ from pipelines.agents import (
 )
 from utils.evaluation import get_avg_feedbacks_score, get_num_feedbacks_scores
 
+
 class ResearchPipeline:
     def __init__(self, api_client=None, iterations: int = 3):
         self.iterations = max(1, iterations)

@@ -4,6 +4,7 @@ from typing import Dict, List
 
 from openai import OpenAI
 
+
 class OpenAIClient:
     def __init__(self, model: str = 'gpt-4o') -> None:
         self._client = OpenAI(api_key=os.getenv('OPENAI_API_KEY')).with_options(timeout=30)

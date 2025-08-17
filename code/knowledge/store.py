@@ -5,6 +5,7 @@ import torch
 
 from utils.data_io import load_jsonl
 
+
 class KnowledgeStore(object):
     def __init__(self, file_path):
         super(KnowledgeStore, self).__init__()

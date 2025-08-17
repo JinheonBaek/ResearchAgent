@@ -61,7 +61,7 @@ python ./code/main.py \
 If you use or build upon this project, please cite:
 
 ```bibtex
-@inproceedings{Baek2024ResearchAgent,
+@inproceedings{Baek2025ResearchAgent,
   title={ResearchAgent: Iterative Research Idea Generation over Scientific Literature with Large Language Models},
   author={Jinheon Baek and Sujay Kumar Jauhar and Silviu Cucerzan and Sung Ju Hwang},
   booktitle={NAACL},

@@ -4,6 +4,8 @@ from pipelines.agents import (
     ProblemValidator,
     MethodDeveloper,
     MethodValidator,
+    ExperimentDesigner,
+    ExperimentValidator,
 )
 from utils.evaluation import get_avg_feedbacks_score, get_num_feedbacks_scores
 
@@ -15,6 +17,8 @@ class ResearchPipeline:
         self.problem_validator = ProblemValidator(api_client)
         self.method_developer = MethodDeveloper(api_client)
         self.method_validator = MethodValidator(api_client)
+        self.experiment_designer = ExperimentDesigner(api_client)
+        self.experiment_validator = ExperimentValidator(api_client)
 
     def run(self, context: Dict) -> Dict:
         history = {'problems': [], 'methods': [], 'experiments': []}
@@ -67,6 +71,31 @@ class ResearchPipeline:
             method=best_method.get('method'),
             method_rationale=best_method.get('rationale'),
             method_feedbacks=best_method.get('feedbacks'),
+        )
+
+        # Experiment design and validation
+        for _ in range(self.iterations):
+            context.update(self.experiment_designer.run(context))
+            context.update(self.experiment_validator.run(context))
+            history['experiments'].append(
+                {
+                    'experiment': context.get('experiment'),
+                    'rationale': context.get('experiment_rationale'),
+                    'feedbacks': context.get('experiment_feedbacks'),
+                }
+            )
+
+        # Select the best-scored experiment to use for context
+        best_experiment = max(
+            history['experiments'],
+            key=lambda experiment: get_avg_feedbacks_score(experiment.get('feedbacks') or {})
+            if get_num_feedbacks_scores(experiment.get('feedbacks') or {}) > 0
+            else -1,
+        )
+        context.update(
+            experiment=best_experiment.get('experiment'),
+            experiment_rationale=best_experiment.get('rationale'),
+            experiment_feedbacks=best_experiment.get('feedbacks'),
         )
 
         context.update({'history': history})

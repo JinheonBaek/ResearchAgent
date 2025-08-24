@@ -37,6 +37,7 @@ def run(
         context = research_pipeline.run(context)
 
         results.append(context)
+        data_io.save_result('./results/ideas.jsonl', context)
 
     return results
 

@@ -1,4 +1,6 @@
 from typing import Dict
+from tqdm.auto import tqdm 
+
 from pipelines.agents import (
     ProblemIdentifier,
     ProblemValidator,
@@ -20,13 +22,31 @@ class ResearchPipeline:
         self.experiment_designer = ExperimentDesigner(api_client)
         self.experiment_validator = ExperimentValidator(api_client)
 
+        self._labels = [
+            'Problem Identifier', 'Problem Validator',
+            'Method Developer', 'Method Validator',
+            'Experiment Designer', 'Experiment Validator',
+        ]
+        self._label_width = max(len(s) for s in self._labels)
+
+    def _log(self, message: str) -> None:
+        tqdm.write(str(message))
+
+    def _fmt(self, label: str) -> str:
+        return f'[{label.ljust(self._label_width)}]'
+
     def run(self, context: Dict) -> Dict:
         history = {'problems': [], 'methods': [], 'experiments': []}
+        self._log(f"{self._fmt('Paper Title')} {context['paper']['title']}")
 
         # Problem ideation and validation
-        for _ in range(self.iterations):
+        for i in range(self.iterations):
+            self._log(f"{self._fmt('Problem Identifier')} Iteration {i + 1}/{self.iterations} — generating problem…")
             context.update(self.problem_identifier.run(context))
+            
+            self._log(f"{self._fmt('Problem Validator')} Iteration {i + 1}/{self.iterations} — validating problem…")
             context.update(self.problem_validator.run(context))
+            
             history['problems'].append(
                 {
                     'problem': context.get('problem'),
@@ -49,9 +69,13 @@ class ResearchPipeline:
         )
 
         # Method development and validation
-        for _ in range(self.iterations):
+        for i in range(self.iterations):
+            self._log(f"{self._fmt('Method Developer')} Iteration {i + 1}/{self.iterations} — proposing method…")
             context.update(self.method_developer.run(context))
+            
+            self._log(f"{self._fmt('Method Validator')} Iteration {i + 1}/{self.iterations} — validating method…")
             context.update(self.method_validator.run(context))
+            
             history['methods'].append(
                 {
                     'method': context.get('method'),
@@ -74,9 +98,13 @@ class ResearchPipeline:
         )
 
         # Experiment design and validation
-        for _ in range(self.iterations):
+        for i in range(self.iterations):
+            self._log(f"{self._fmt('Experiment Designer')} Iteration {i + 1}/{self.iterations} — designing experiment…")
             context.update(self.experiment_designer.run(context))
+            
+            self._log(f"{self._fmt('Experiment Validator')} Iteration {i + 1}/{self.iterations} — validating experiment…")
             context.update(self.experiment_validator.run(context))
+            
             history['experiments'].append(
                 {
                     'experiment': context.get('experiment'),
